@@ -1,9 +1,9 @@
 export default function Header() {
   return (
-    <div className="flex justify-between items-center py-4">
+    <div className="flex items-center justify-between py-4 font-sans">
       <div>LXNA</div>
       <div>
-        <ul className="flex gap-4 font-sans text-sm uppercase tracking-widest">
+        <ul className="flex gap-4 text-sm tracking-widest uppercase">
           <li>Home</li>
           <li>About</li>
           <li>Contact</li>
