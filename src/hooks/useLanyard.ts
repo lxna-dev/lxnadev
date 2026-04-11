@@ -61,7 +61,7 @@ function parseResponse(raw: any): LanyardData {
     ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp?size=64`
     : `https://cdn.discordapp.com/embed/avatars/0.png`;
 
-  const customActivity = d.activities?.find((a: any) => a.type === 4);
+  const customActivity = d.activities?.find((a: { type: number }) => a.type === 4);
   const custom_status: CustomStatus | null = customActivity
     ? {
         text: customActivity.state ?? null,
@@ -71,7 +71,7 @@ function parseResponse(raw: any): LanyardData {
     : null;
 
   const vsActivity = d.activities?.find(
-    (a: any) => a.type === 0 && a.name === "Code",
+    (a: { type: number; name: string }) => a.type === 0 && a.name === "Code",
   );
   const vscode: VSCodeActivity | null = vsActivity
     ? {
