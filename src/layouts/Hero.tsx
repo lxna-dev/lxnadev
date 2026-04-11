@@ -117,7 +117,7 @@ export default function Hero() {
         >
           {/* Top: coffee tagline + name */}
           <div>
-            <p className="font-syne text-dim-grey text-sm mb-0.5 flex items-center gap-1.5 tracking-widest uppercase">
+            <p className="font-syne text-dim-grey text-sm mb-0.5 flex flex-wrap items-center gap-1.5 tracking-widest uppercase">
               currently running on{" "}
               <Lottie
                 animationData={infinityAnimation}

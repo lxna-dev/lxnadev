@@ -7,7 +7,7 @@ import {
   Syne_Mono,
 } from "next/font/google";
 import "@/styles/globals.css";
-import Header from "@/layouts/Header";
+import SidebarLayout from "@/layouts/SidebarLayout";
 
 const unifrakturMaguntia = UnifrakturMaguntia({
   variable: "--font-unifraktur-maguntia",
@@ -52,8 +52,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${unifrakturMaguntia.variable} ${voltaire.variable} ${syneMono.variable} mx-auto antialiased`}
       >
-        <Header />
-        {children}
+        <SidebarLayout>{children}</SidebarLayout>
       </body>
     </html>
   );
