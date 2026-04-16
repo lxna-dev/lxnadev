@@ -28,10 +28,10 @@ export default function Contact() {
           </p>
           <p
             className="font-mono font-black leading-[0.9] tracking-tight text-onyx"
-            style={{ fontSize: "clamp(3rem, 10vw, 7.5rem)" }}
+            style={{ fontSize: "clamp(2rem, 6vw, 4.5rem)" }}
           >
-            LET&apos;S{" "}
-            <span className="text-flag-red">TALK.</span>
+            DON&apos;T BE{" "}
+            <span className="text-flag-red">A STRANGER.</span>
           </p>
         </motion.div>
 

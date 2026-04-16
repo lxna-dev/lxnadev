@@ -20,16 +20,16 @@ const PROJECTS: Project[] = [
     description:
       "A portfolio and commission website built for a friend — a clean space to showcase her work and let clients reach out.",
     tags: [],
-    imageUrl: "https://image.thum.io/get/width/1280/https://helios.lxna.dev",
+    imageUrl: "/thumbnails/helios.png",
     liveUrl: "https://helios.lxna.dev",
     year: "2025",
   },
   {
-    title: "New Hues",
+    title: "NewHues",
     description:
       "A marketing company website currently in development — building out the brand presence and web foundation.",
     tags: [],
-    imageUrl: "https://image.thum.io/get/width/1280/https://newhues.vercel.app",
+    imageUrl: "/thumbnails/newheus.png",
     liveUrl: "https://newhues.vercel.app",
     year: "2025",
   },
@@ -67,7 +67,7 @@ export default function Projects() {
                   <span className="font-syne text-dim-grey text-xs tracking-widest uppercase md:hidden">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="font-sans text-onyx text-4xl font-black uppercase leading-none tracking-tight transition-colors duration-200 group-hover:text-flag-red">
+                  <h3 className="text-onyx group-hover:text-flag-red font-sans text-4xl leading-none font-black tracking-tight uppercase transition-colors duration-200">
                     {project.title}
                   </h3>
                 </div>
@@ -98,7 +98,7 @@ export default function Projects() {
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-syne text-onyx border-onyx border-b pb-px text-sm tracking-widest uppercase transition-colors duration-200 hover:text-flag-red"
+                      className="font-syne text-onyx border-onyx hover:text-flag-red border-b pb-px text-sm tracking-widest uppercase transition-colors duration-200"
                     >
                       Live ↗
                     </a>
@@ -108,7 +108,7 @@ export default function Projects() {
                       href={project.repoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-syne text-onyx border-onyx border-b pb-px text-sm tracking-widest uppercase transition-colors duration-200 hover:text-flag-red"
+                      className="font-syne text-onyx border-onyx hover:text-flag-red border-b pb-px text-sm tracking-widest uppercase transition-colors duration-200"
                     >
                       Repo ↗
                     </a>
@@ -125,7 +125,7 @@ export default function Projects() {
                   src={project.imageUrl}
                   alt={project.title}
                   fill
-                  unoptimized
+                  sizes="(max-width: 768px) 100vw, 300px"
                   className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
                 />
                 <div

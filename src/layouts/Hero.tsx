@@ -56,12 +56,6 @@ const SKILLS: { category: string; items: { name: string; icon?: IconType }[] }[]
   },
 ];
 
-const STATS = [
-  { value: "5+", label: "Years of Experience" },
-  { value: "20+", label: "Projects Shipped" },
-  { value: "10+", label: "Clients Served" },
-];
-
 const STATUS_COLOR: Record<string, string> = {
   online: "bg-green-500",
   idle: "bg-yellow-400",
@@ -159,7 +153,7 @@ export default function Hero({ initialData }: { initialData?: LanyardData }) {
       </motion.div>
 
       {/* Content grid: roles+desc+CTAs left, widgets right */}
-      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-[1fr_260px]">
+      <div className="mt-8 mb-10 grid grid-cols-1 items-start gap-8 md:grid-cols-[1fr_260px]">
         {/* Left */}
         <motion.div {...fadeUp(0.12)} className="flex flex-col gap-6">
           {/* Roles */}
@@ -318,28 +312,8 @@ export default function Hero({ initialData }: { initialData?: LanyardData }) {
         </motion.div>
       </div>
 
-      {/* Stats strip */}
-      <motion.div
-        {...fadeUp(0.22)}
-        className="border-onyx mt-10 grid grid-cols-3 border-t"
-      >
-        {STATS.map((stat, i) => (
-          <div
-            key={stat.label}
-            className={`flex flex-col gap-1 py-5 ${i !== 0 ? "border-onyx border-l pl-4" : ""}`}
-          >
-            <span className="font-sans text-onyx text-4xl font-black leading-none">
-              {stat.value}
-            </span>
-            <span className="font-syne text-dim-grey mt-1 text-xs tracking-widest uppercase">
-              {stat.label}
-            </span>
-          </div>
-        ))}
-      </motion.div>
-
       {/* Skills */}
-      <div className="border-onyx border-t">
+      <motion.div {...fadeUp(0.28)} className="border-onyx border-t">
         {SKILLS.map((group, i) => (
           <motion.div
             key={group.category}
@@ -385,7 +359,7 @@ export default function Hero({ initialData }: { initialData?: LanyardData }) {
             </div>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
