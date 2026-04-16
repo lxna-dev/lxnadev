@@ -66,4 +66,24 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--alabaster);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--flag-red);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #a81520;
+  }
+
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: var(--flag-red) var(--alabaster);
+  }
 }

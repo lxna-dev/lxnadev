@@ -20,9 +20,11 @@ This is a **Next.js 15 portfolio site** (App Router, React 19) for LXNA — a fu
 
 - `src/app/` — App Router pages and root layout. `layout.tsx` registers all Google Fonts and wraps every page in `<SidebarLayout>`.
 - `src/layouts/` — Full-viewport page sections and shell components. `SidebarLayout.tsx` is the root shell (see below). `Hero.tsx` is the main landing section. `Header.tsx` is unused — the trigger button now lives inside `SidebarLayout`.
-- `src/hooks/` — Custom hooks. `useLanyard.ts` polls the Lanyard API every 30s for live Discord presence and Spotify data.
+- `src/hooks/` — Custom hooks. `useLanyard.ts` wraps `src/lib/lanyard.ts` with client-side polling every 30s; accepts `initialData` for SSR hydration.
 - `src/components/ui/` — UI primitives. `button.tsx` is shadcn/ui. `FluidText.tsx` is an SVG-based text scaler — prefer the `@container` + `cqw` CSS approach for new instances.
 - `src/lib/utils.ts` — Exports `cn()` (`clsx` + `tailwind-merge`).
+- `src/lib/lanyard.ts` — Lanyard types (`LanyardData`, `LanyardSpotify`, etc.), `parseResponse()`, and `fetchLanyard()`. Import types from here, not from the hook.
+- `src/lib/animations.ts` — Shared `motion/react` animation presets: `fadeUp`, `fadeDown`, `fadeIn`, `fadeLeft`, `fadeRight`. Each takes an optional `delay` number and returns spread-ready `initial/animate/transition` props.
 - `src/styles/globals.css` — All Tailwind v4 config and design tokens via `@theme inline`.
 - `src/types/css.d.ts` — Declares `*.css` modules to suppress TypeScript side-effect import errors.
 - `public/animations/` — Lottie JSON files.
@@ -37,9 +39,17 @@ This is a **Next.js 15 portfolio site** (App Router, React 19) for LXNA — a fu
 - **Content animation**: When the sidebar opens, the main content shifts right (`x: 24`) and tilts (`rotate: 3`) with `transformOrigin: "bottom left"` — a paper-slide effect. The outer container is `fixed inset-0` with the sidebar background image, and the content area is `bg-alabaster` with a left-edge box shadow for depth.
 - **Background**: `public/assets/sidebarbg.jpg` with `background-attachment: fixed` is applied to the outer container, the clipped triangle div, and the mobile overlay — all three share the same viewport-anchored image coordinates for a seamless appearance.
 
+### Page sections
+
+`src/app/page.tsx` is an async Server Component that server-fetches Lanyard data and passes it as `initialData` to `<Hero>`, avoiding a client-side loading flash. Sections render in order: `Hero` → `Specializations` → `Projects` → `Contact`.
+
+Each section in `src/layouts/` follows the same pattern: a meta bar (`— 0N` index + section name, `font-syne text-dim-grey text-xs tracking-widest uppercase`) at the top, then content, all wrapped in `<section className="flex flex-col px-3">`. Use `fadeUp()` from `@/lib/animations` for entrance animations.
+
+`Work.tsx` exists but is not currently rendered in `page.tsx` — add it between `Specializations` and `Projects` when ready.
+
 ### Lanyard integration
 
-`src/hooks/useLanyard.ts` fetches `https://api.lanyard.rest/v1/users/749287774703714497` every 30s. Returns:
+`src/lib/lanyard.ts` owns all types and API logic. `src/hooks/useLanyard.ts` is the client-side consumer — it skips the initial fetch when `initialData` is provided and starts the 30s polling interval immediately. Returns:
 - `discord_user` — avatar URL, display name
 - `discord_status` — online/idle/dnd/offline
 - `custom_status` — parsed from activities type 4

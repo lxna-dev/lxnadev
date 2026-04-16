@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X, ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { X, ArrowDownRight, ArrowUpLeft } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useScramble } from "use-scramble";
 
@@ -16,8 +16,7 @@ const BG = {
 
 const NAV_LINKS = [
   { label: "Home", href: "#" },
-  { label: "Work", href: "#work" },
-  { label: "About", href: "#about" },
+  { label: "Projects", href: "#projects" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -27,12 +26,14 @@ function ScrambleLink({
   onClick,
   className,
   motionProps,
+  index,
 }: {
   label: string;
   href: string;
   onClick: () => void;
   className: string;
   motionProps?: React.ComponentProps<typeof motion.a>;
+  index?: number;
 }) {
   const { ref, replay } = useScramble({
     text: label,
@@ -52,6 +53,11 @@ function ScrambleLink({
       className={className}
       {...motionProps}
     >
+      {index !== undefined && (
+        <span className="font-syne text-dim-grey/60 self-start pt-1 text-[10px] tracking-widest">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+      )}
       <span ref={ref} />
     </motion.a>
   );
@@ -66,26 +72,32 @@ function SidebarContent({
 }) {
   return (
     <div className="flex h-full w-72 flex-col p-6">
-      <button
-        onClick={onClose}
-        aria-label="Close menu"
-        className="text-alabaster/70 hover:text-alabaster mb-10 self-end transition-colors"
-      >
-        <X size={20} />
-      </button>
+      {/* Header: logo + close button */}
+      <div className="mb-6 flex items-center justify-between">
+        <p className="text-alabaster font-mono text-xl font-black tracking-tight">
+          LXNA<span className="text-flag-red">.DEV</span>
+        </p>
+        <button
+          onClick={onClose}
+          aria-label="Close menu"
+          className="bg-onyx text-alabaster cursor-pointer p-1 transition-opacity hover:opacity-75"
+        >
+          <X size={18} />
+        </button>
+      </div>
 
-      <p className="text-alabaster mb-10 font-mono text-xl font-black tracking-tight">
-        LXNA.DEV
-      </p>
+      {/* Separator */}
+      <div className="border-alabaster/10 mb-4 border-b" />
 
-      <nav className="flex flex-col gap-2">
+      <nav className="flex flex-col">
         {NAV_LINKS.map((link, i) => (
           <ScrambleLink
             key={link.label}
             label={link.label}
             href={link.href}
             onClick={onClose}
-            className="font-syne text-flag-red hover:text-flag-red/70 px-4 py-2.5 text-7xl font-bold tracking-widest uppercase transition-colors duration-200"
+            index={i}
+            className="font-syne text-flag-red hover:text-flag-red/70 flex items-baseline gap-3 px-2 py-2 text-[clamp(2rem,10vw,4.5rem)] font-bold tracking-widest uppercase transition-colors duration-200"
             motionProps={{
               initial: animate ? { opacity: 0, x: -12 } : false,
               animate: { opacity: 1, x: 0 },
@@ -99,7 +111,8 @@ function SidebarContent({
         ))}
       </nav>
 
-      <div className="mt-auto">
+      {/* Footer */}
+      <div className="border-alabaster/10 mt-auto border-t pt-4">
         <p className="font-syne text-alabaster/40 text-[10px] tracking-widest uppercase">
           Portfolio / 2026
         </p>
@@ -121,7 +134,10 @@ export default function SidebarLayout({
       <motion.div
         initial={{ width: 0 }}
         animate={{ width: open ? SIDEBAR_WIDTH : 0 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+        transition={{
+          duration: 0.4,
+          ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+        }}
         className="hidden shrink-0 md:block"
       />
 
@@ -129,42 +145,56 @@ export default function SidebarLayout({
       <motion.div
         initial={{ width: 0 }}
         animate={{ width: open ? SIDEBAR_WIDTH : 0 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+        transition={{
+          duration: 0.4,
+          ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+        }}
         className="fixed top-0 left-0 hidden h-screen overflow-hidden md:block"
       >
-        <div className="flex h-full flex-col gap-6 p-6 pr-14" style={BG}>
-          <button
-            onClick={() => setOpen(false)}
-            aria-label="Close menu"
-            className="text-alabaster/70 hover:text-alabaster self-end transition-colors"
-          >
-            <X size={20} />
-          </button>
+        <div className="flex h-full flex-col p-6 pr-14" style={BG}>
+          {/* Header: logo only — close is handled by the main content toggle */}
+          <div className="mb-6">
+            <p className="text-alabaster font-mono text-xl font-black tracking-tight">
+              LXNA<span className="text-flag-red">.DEV</span>
+            </p>
+          </div>
 
-          <p className="text-alabaster font-mono text-xl font-black tracking-tight">
-            LXNA.DEV
-          </p>
+          {/* Separator */}
+          <div className="border-alabaster/10 mb-4 border-b" />
 
-          <nav className="flex flex-col gap-2">
+          <nav className="flex flex-col">
             {NAV_LINKS.map((link, i) => (
               <ScrambleLink
                 key={link.label}
                 label={link.label}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="font-syne text-flag-red hover:text-flag-red/70 px-4 py-2.5 text-7xl font-bold tracking-widest uppercase transition-colors duration-200"
+                index={i}
+                className="font-syne text-flag-red hover:text-flag-red/70 flex items-baseline gap-3 px-2 py-2 text-[clamp(2rem,10vw,4.5rem)] font-bold tracking-widest uppercase transition-colors duration-200"
                 motionProps={{
                   initial: open ? { opacity: 0, x: -12 } : false,
                   animate: { opacity: 1, x: 0 },
                   transition: {
                     delay: 0.15 + i * 0.07,
                     duration: 0.3,
-                    ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+                    ease: [0.22, 1, 0.36, 1] as [
+                      number,
+                      number,
+                      number,
+                      number,
+                    ],
                   },
                 }}
               />
             ))}
           </nav>
+
+          {/* Footer */}
+          <div className="border-alabaster/10 mt-auto border-t pt-4">
+            <p className="font-syne text-alabaster/40 text-[10px] tracking-widest uppercase">
+              Portfolio / 2026
+            </p>
+          </div>
         </div>
       </motion.div>
 
@@ -217,7 +247,7 @@ export default function SidebarLayout({
             className="bg-onyx cursor-pointer p-1 transition-opacity hover:opacity-75"
           >
             {open ? (
-              <ArrowUpRight className="text-alabaster" />
+              <ArrowUpLeft className="text-alabaster" />
             ) : (
               <ArrowDownRight className="text-alabaster" />
             )}

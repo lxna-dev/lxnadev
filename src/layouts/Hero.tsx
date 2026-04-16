@@ -2,25 +2,60 @@
 
 import { Button } from "@/components/ui/button";
 import { useLanyard } from "@/hooks/useLanyard";
+import { LanyardData } from "@/lib/lanyard";
 import { motion } from "motion/react";
-import Marquee from "react-fast-marquee";
-import Lottie from "lottie-react";
+import dynamic from "next/dynamic";
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 import infinityAnimation from "../../public/animations/Infinity.json";
 import { useEffect, useState } from "react";
+import { fadeUp } from "@/lib/animations";
+import {
+  SiNextdotjs,
+  SiReact,
+  SiTailwindcss,
+  SiTypescript,
+  SiVite,
+  SiNodedotjs,
+  SiSupabase,
+  SiPostgresql,
+  SiZapier,
+  SiTwilio,
+  SiWordpress,
+} from "react-icons/si";
+import { type IconType } from "react-icons";
 
-const TECH_STACK = [
-  "Next.js",
-  "React",
-  "Node",
-  "Supabase",
-  "Twilio",
-  "GoHighLevel",
-  "Zapier",
-  "Lovable",
-  "WordPress",
+const SKILLS: { category: string; items: { name: string; icon?: IconType }[] }[] = [
+  {
+    category: "Frontend",
+    items: [
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "React", icon: SiReact },
+      { name: "Tailwind", icon: SiTailwindcss },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Vite", icon: SiVite },
+    ],
+  },
+  {
+    category: "Backend",
+    items: [
+      { name: "Node", icon: SiNodedotjs },
+      { name: "Supabase", icon: SiSupabase },
+      { name: "PostgreSQL", icon: SiPostgresql },
+      { name: "REST APIs" },
+    ],
+  },
+  {
+    category: "Tools",
+    items: [
+      { name: "GoHighLevel" },
+      { name: "Zapier", icon: SiZapier },
+      { name: "Twilio", icon: SiTwilio },
+      { name: "WordPress", icon: SiWordpress },
+      { name: "Lovable" },
+    ],
+  },
 ];
 
-// --- Replace with real numbers ---
 const STATS = [
   { value: "5+", label: "Years of Experience" },
   { value: "20+", label: "Projects Shipped" },
@@ -49,36 +84,26 @@ function formatElapsed(startMs: number): string {
   return `${m}m`;
 }
 
-const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: {
-    duration: 0.6,
-    delay,
-    ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-  },
-});
-
-export default function Hero() {
-  const { data, loading } = useLanyard();
+export default function Hero({ initialData }: { initialData?: LanyardData }) {
+  const { data, loading } = useLanyard(initialData);
 
   const discordStatus = data?.discord_status ?? "offline";
   const spotify = data?.listening_to_spotify ? data.spotify : null;
 
-  // Live Spotify progress bar
   const [spotifyProgress, setSpotifyProgress] = useState(0);
   useEffect(() => {
     if (!spotify?.timestamps) return;
     const tick = () => {
       const { start, end } = spotify.timestamps!;
-      setSpotifyProgress(Math.min(100, ((Date.now() - start) / (end - start)) * 100));
+      setSpotifyProgress(
+        Math.min(100, ((Date.now() - start) / (end - start)) * 100),
+      );
     };
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, [spotify]);
 
-  // VS Code elapsed time
   const [vsElapsed, setVsElapsed] = useState("");
   useEffect(() => {
     if (!data?.vscode?.elapsed_start) return;
@@ -88,7 +113,6 @@ export default function Hero() {
     return () => clearInterval(id);
   }, [data?.vscode]);
 
-  // Active platform label
   const platform = data?.active_on_discord_mobile
     ? "Mobile"
     : data?.active_on_discord_desktop
@@ -99,7 +123,7 @@ export default function Hero() {
 
   return (
     <section className="flex flex-col px-3">
-      {/* Top meta bar */}
+      {/* Meta bar */}
       <motion.div
         {...fadeUp(0)}
         className="border-onyx font-syne text-dim-grey flex items-center justify-between border-b py-2 text-xs tracking-widest uppercase"
@@ -108,66 +132,89 @@ export default function Hero() {
         <span>Portfolio / 2026</span>
       </motion.div>
 
-      {/* Main grid: content left, widgets right */}
-      <div className="grid flex-1 grid-cols-1 gap-6 py-6 md:grid-cols-[1fr_260px]">
-        {/* Left — name, subheadline, CTAs */}
-        <motion.div
-          {...fadeUp(0.08)}
-          className="flex flex-col justify-between gap-6"
+      {/* Tagline */}
+      <motion.div
+        {...fadeUp(0.04)}
+        className="font-syne text-dim-grey mt-6 flex flex-wrap items-center gap-1.5 text-sm tracking-widest uppercase"
+      >
+        currently running on{" "}
+        <Lottie
+          animationData={infinityAnimation}
+          loop
+          className="inline-block"
+          style={{ width: 13, height: 13 }}
+        />{" "}
+        amounts of coffee ☕
+      </motion.div>
+
+      {/* Name — dominant visual */}
+      <motion.div {...fadeUp(0.08)} className="mt-2 leading-none">
+        <p
+          className="font-mono font-black tracking-tight"
+          style={{ fontSize: "clamp(3.5rem, 11vw, 8rem)" }}
         >
-          {/* Top: coffee tagline + name */}
-          <div>
-            <p className="font-syne text-dim-grey text-sm mb-0.5 flex flex-wrap items-center gap-1.5 tracking-widest uppercase">
-              currently running on{" "}
-              <Lottie
-                animationData={infinityAnimation}
-                loop
-                className="inline-block"
-                style={{ width: 16, height: 16 }}
-              />{" "}
-              amounts of coffee ☕
+          LXNA
+          <span className="text-flag-red">.DEV</span>
+        </p>
+      </motion.div>
+
+      {/* Content grid: roles+desc+CTAs left, widgets right */}
+      <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-[1fr_260px]">
+        {/* Left */}
+        <motion.div {...fadeUp(0.12)} className="flex flex-col gap-6">
+          {/* Roles */}
+          <div className="border-onyx flex flex-col gap-0 border-l-2 pl-3">
+            <p className="font-syne text-onyx text-sm font-medium tracking-wide">
+              Full Stack Developer
             </p>
-            <div>
-              <p className="font-mono text-2xl font-black">LXNA.DEV</p>
-            </div>
+            <p className="font-syne text-onyx text-sm font-medium tracking-wide">
+              GoHighLevel Technical Specialist
+            </p>
           </div>
 
-          {/* Bottom: subheadline + CTAs */}
-          <div className="flex flex-col gap-4">
-            <p className="font-syne text-onyx max-w-md text-base leading-relaxed">
-              Full Stack Developer & GoHighLevel Technical Specialist building
-              web apps and automation systems that{" "}
-              <span className="text-flag-red">actually ship.</span>
-            </p>
-            <div className="flex gap-3">
-              <Button
-                size="sm"
-                className="font-syne rounded-none text-xs tracking-wider uppercase"
-              >
-                View My Work →
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                className="border-onyx font-syne hover:bg-onyx hover:text-alabaster rounded-none text-xs tracking-wider uppercase"
-              >
-                Get in Touch
-              </Button>
-            </div>
+          {/* Description */}
+          <p className="font-syne text-dim-grey max-w-sm text-sm leading-relaxed">
+            Building web apps and automation systems that{" "}
+            <span className="text-flag-red font-medium">actually ship.</span>{" "}
+            From Next.js frontends to full CRM pipelines — end to end.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-wrap gap-3">
+            <Button
+              size="sm"
+              className="font-syne rounded-none text-xs tracking-wider uppercase"
+              onClick={() =>
+                document
+                  .getElementById("projects")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              View My Work →
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="border-onyx font-syne hover:bg-onyx hover:text-alabaster rounded-none text-xs tracking-wider uppercase"
+              onClick={() =>
+                document
+                  .getElementById("contact")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              Get in Touch
+            </Button>
           </div>
         </motion.div>
 
-        {/* Right — status widgets */}
-        <motion.div
-          {...fadeUp(0.14)}
-          className="flex flex-col justify-start gap-3"
-        >
-          {/* Discord card */}
-          <div className="border-onyx flex flex-col gap-2 border p-3">
-            <div className="font-syne text-dim-grey flex items-center justify-between text-[11px] tracking-widest uppercase">
+        {/* Right — Lanyard widgets */}
+        <motion.div {...fadeUp(0.16)} className="flex flex-col gap-2.5">
+          {/* Discord */}
+          <div className="border-onyx flex flex-col gap-2.5 border p-3">
+            <div className="font-syne text-dim-grey flex items-center justify-between text-xs tracking-widest uppercase">
               <span>Discord</span>
               {platform && (
-                <span className="text-dim-grey text-[10px] normal-case tracking-normal">
+                <span className="text-xs tracking-normal normal-case">
                   {platform}
                 </span>
               )}
@@ -176,7 +223,6 @@ export default function Hero() {
               <p className="text-dim-grey text-xs">Loading…</p>
             ) : (
               <div className="flex items-center gap-3">
-                {/* Avatar with status dot */}
                 <div className="relative shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -196,7 +242,7 @@ export default function Hero() {
                     {STATUS_LABEL[discordStatus]}
                   </p>
                   {data?.custom_status?.text && (
-                    <p className="text-dim-grey truncate text-[10px] italic">
+                    <p className="text-dim-grey truncate text-xs italic">
                       {data.custom_status.text}
                     </p>
                   )}
@@ -205,21 +251,21 @@ export default function Hero() {
             )}
           </div>
 
-          {/* Spotify card */}
-          <div className="border-onyx flex flex-col gap-2 border p-3">
-            <div className="font-syne text-dim-grey flex items-center justify-between text-[11px] tracking-widest uppercase">
+          {/* Spotify */}
+          <div className="border-onyx flex flex-col gap-2.5 border p-3">
+            <div className="font-syne text-dim-grey flex items-center justify-between text-xs tracking-widest uppercase">
               <span>Spotify</span>
               {spotify && (
-                <span className="text-flag-red flex items-center gap-1">
-                  <span className="bg-flag-red inline-block h-1.5 w-1.5 rounded-full" />
-                  Now Playing
+                <span className="text-flag-red flex items-center gap-1.5 text-xs tracking-widest uppercase">
+                  <span className="bg-flag-red inline-block h-1.5 w-1.5 animate-pulse rounded-full" />
+                  Live
                 </span>
               )}
             </div>
             {loading ? (
               <p className="text-dim-grey text-xs">Loading…</p>
             ) : spotify ? (
-              <>
+              <div className="flex flex-col gap-2.5">
                 <div className="flex items-center gap-2">
                   {spotify.album_art_url && (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -236,7 +282,7 @@ export default function Hero() {
                     <p className="text-dim-grey truncate text-xs">
                       {spotify.artist}
                     </p>
-                    <p className="text-dim-grey truncate text-[10px]">
+                    <p className="text-dim-grey truncate text-xs">
                       {spotify.album}
                     </p>
                   </div>
@@ -247,24 +293,24 @@ export default function Hero() {
                     style={{ width: `${spotifyProgress}%` }}
                   />
                 </div>
-              </>
+              </div>
             ) : (
               <p className="text-dim-grey text-xs">Not playing</p>
             )}
           </div>
 
-          {/* VS Code card — only shown when active */}
+          {/* VS Code — conditional */}
           {data?.vscode && (
-            <div className="border-onyx flex flex-col gap-2 border p-3">
-              <div className="font-syne text-dim-grey flex items-center justify-between text-[11px] tracking-widest uppercase">
+            <div className="border-onyx flex flex-col gap-2.5 border p-3">
+              <div className="font-syne text-dim-grey flex items-center justify-between text-xs tracking-widest uppercase">
                 <span>VS Code</span>
                 {vsElapsed && (
-                  <span className="text-dim-grey text-[10px] normal-case tracking-normal">
+                  <span className="text-xs tracking-normal normal-case">
                     {vsElapsed}
                   </span>
                 )}
               </div>
-              <p className="font-syne text-onyx truncate text-xs">
+              <p className="font-syne text-onyx truncate text-sm">
                 {data.vscode.details}
               </p>
             </div>
@@ -274,40 +320,72 @@ export default function Hero() {
 
       {/* Stats strip */}
       <motion.div
-        {...fadeUp(0.2)}
-        className="border-onyx grid grid-cols-3 border-t"
+        {...fadeUp(0.22)}
+        className="border-onyx mt-10 grid grid-cols-3 border-t"
       >
         {STATS.map((stat, i) => (
           <div
             key={stat.label}
-            className={`flex flex-col gap-0.5 py-4 ${i !== 0 ? "border-onyx border-l pl-4" : ""}`}
+            className={`flex flex-col gap-1 py-5 ${i !== 0 ? "border-onyx border-l pl-4" : ""}`}
           >
-            <span className="text-onyx font-sans text-3xl font-black">
+            <span className="font-sans text-onyx text-4xl font-black leading-none">
               {stat.value}
             </span>
-            <span className="font-syne text-dim-grey text-xs tracking-widest uppercase">
+            <span className="font-syne text-dim-grey mt-1 text-xs tracking-widest uppercase">
               {stat.label}
             </span>
           </div>
         ))}
       </motion.div>
 
-      {/* Tech marquee */}
-      <motion.div
-        {...fadeUp(0.26)}
-        className="border-onyx overflow-hidden border-t py-3"
-      >
-        <Marquee speed={35} gradient={false}>
-          {TECH_STACK.map((tech) => (
-            <span
-              key={tech}
-              className="font-syne text-dim-grey mx-8 text-xs tracking-widest uppercase"
-            >
-              {tech} <span className="text-flag-red">×</span>
-            </span>
-          ))}
-        </Marquee>
-      </motion.div>
+      {/* Skills */}
+      <div className="border-onyx border-t">
+        {SKILLS.map((group, i) => (
+          <motion.div
+            key={group.category}
+            {...fadeUp(0.28 + i * 0.07)}
+            className={`border-onyx grid grid-cols-[96px_1fr] items-start gap-4 py-4 ${i !== 0 ? "border-t" : ""}`}
+          >
+            <div className="flex flex-col gap-1 pt-0.5">
+              <span className="font-syne text-dim-grey text-xs tracking-widest uppercase">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="font-syne text-flag-red text-xs tracking-widest uppercase">
+                {group.category}
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {group.items.map((item, j) => (
+                <motion.span
+                  key={item.name}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    delay: 0.32 + i * 0.07 + j * 0.045,
+                    duration: 0.25,
+                    ease: [0.25, 0.1, 0.25, 1] as [
+                      number,
+                      number,
+                      number,
+                      number,
+                    ],
+                  }}
+                  className="border-onyx font-syne text-onyx group relative cursor-default overflow-hidden border px-3 py-1.5 text-xs tracking-widest uppercase"
+                >
+                  <span
+                    className="bg-onyx absolute inset-0 origin-left scale-x-0 transition-transform duration-300 ease-in-out group-hover:scale-x-100"
+                    aria-hidden
+                  />
+                  <span className="relative flex items-center gap-1.5 transition-colors duration-300 group-hover:text-alabaster">
+                    {item.icon && <item.icon size={12} className="shrink-0" />}
+                    {item.name}
+                  </span>
+                </motion.span>
+              ))}
+            </div>
+          </motion.div>
+        ))}
+      </div>
     </section>
   );
 }
