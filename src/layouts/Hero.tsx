@@ -15,6 +15,7 @@ import {
   SiTailwindcss,
   SiTypescript,
   SiVite,
+  SiJavascript,
   SiNodedotjs,
   SiSupabase,
   SiPostgresql,
@@ -24,7 +25,10 @@ import {
 } from "react-icons/si";
 import { type IconType } from "react-icons";
 
-const SKILLS: { category: string; items: { name: string; icon?: IconType }[] }[] = [
+const SKILLS: {
+  category: string;
+  items: { name: string; icon?: IconType }[];
+}[] = [
   {
     category: "Frontend",
     items: [
@@ -32,6 +36,7 @@ const SKILLS: { category: string; items: { name: string; icon?: IconType }[] }[]
       { name: "React", icon: SiReact },
       { name: "Tailwind", icon: SiTailwindcss },
       { name: "TypeScript", icon: SiTypescript },
+      { name: "JavaScript", icon: SiJavascript },
       { name: "Vite", icon: SiVite },
     ],
   },
@@ -170,7 +175,7 @@ export default function Hero({ initialData }: { initialData?: LanyardData }) {
           <p className="font-syne text-dim-grey max-w-sm text-sm leading-relaxed">
             Building web apps and automation systems that{" "}
             <span className="text-flag-red font-medium">actually ship.</span>{" "}
-            From Next.js frontends to full CRM pipelines — end to end.
+            From React frontends to full CRM pipelines — end to end.
           </p>
 
           {/* CTAs */}
@@ -350,7 +355,7 @@ export default function Hero({ initialData }: { initialData?: LanyardData }) {
                     className="bg-onyx absolute inset-0 origin-left scale-x-0 transition-transform duration-300 ease-in-out group-hover:scale-x-100"
                     aria-hidden
                   />
-                  <span className="relative flex items-center gap-1.5 transition-colors duration-300 group-hover:text-alabaster">
+                  <span className="group-hover:text-alabaster relative flex items-center gap-1.5 transition-colors duration-300">
                     {item.icon && <item.icon size={12} className="shrink-0" />}
                     {item.name}
                   </span>
