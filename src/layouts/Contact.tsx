@@ -5,8 +5,7 @@ import { fadeUp } from "@/lib/animations";
 
 const SOCIALS = [
   { label: "GitHub", href: "https://github.com/lxna-dev" },
-  { label: "Twitter", href: "https://twitter.com" },
-  { label: "LinkedIn", href: "https://linkedin.com" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/beljohn-luna/" },
 ];
 
 export default function Contact() {
@@ -52,6 +51,10 @@ export default function Contact() {
               ↗
             </span>
           </a>
+          <p className="font-syne text-onyx mt-1 text-base tracking-widest uppercase">
+            Discord:{" "}
+            <span className="text-dim-grey">lxnaowo</span>
+          </p>
         </motion.div>
 
         {/* Socials */}

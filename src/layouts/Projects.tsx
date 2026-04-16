@@ -18,7 +18,7 @@ const PROJECTS: Project[] = [
   {
     title: "Helios",
     description:
-      "A short description of what this project does, who it's for, and what problem it solves.",
+      "A portfolio and commission website built for a friend — a clean space to showcase her work and let clients reach out.",
     tags: [],
     imageUrl: "https://image.thum.io/get/width/1280/https://helios.lxna.dev",
     liveUrl: "https://helios.lxna.dev",
@@ -27,7 +27,7 @@ const PROJECTS: Project[] = [
   {
     title: "New Hues",
     description:
-      "A short description of what this project does, who it's for, and what problem it solves.",
+      "A marketing company website currently in development — building out the brand presence and web foundation.",
     tags: [],
     imageUrl: "https://image.thum.io/get/width/1280/https://newhues.vercel.app",
     liveUrl: "https://newhues.vercel.app",

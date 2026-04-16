@@ -7,12 +7,12 @@ const SPECIALIZATIONS = [
   {
     title: "Funnel Creation",
     description:
-      "End-to-end sales funnels built to convert — from opt-in pages and upsells to automated follow-up sequences. Every step engineered with intent.",
+      "End-to-end sales funnels built to convert — from opt-in pages to automated follow-up sequences. Every step thoughtfully put together.",
   },
   {
     title: "Landing Page Design",
     description:
-      "High-converting landing pages with clean layouts, sharp copy structure, and fast load times. Built to sell, not just look good.",
+      "Landing pages with clean layouts, clear copy structure, and a focus on speed optimization. Built to load fast and communicate clearly.",
   },
   {
     title: "CRM Automation",
@@ -22,7 +22,7 @@ const SPECIALIZATIONS = [
   {
     title: "Web App Development",
     description:
-      "Full stack applications built with Next.js, Supabase, and TypeScript. From MVPs to production systems that handle real traffic.",
+      "Full stack applications built with Next.js, Supabase, and TypeScript. I focus on writing clean, maintainable code and shipping things that actually work.",
   },
 ];
 
