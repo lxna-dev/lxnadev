@@ -38,8 +38,33 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LXNA",
-  description: "Porfolio Website of Beljohn Luna | Full Stack Developer",
+  metadataBase: new URL("https://www.lxna.dev"),
+  title: {
+    default: "LXNA",
+    template: "%s | LXNA",
+  },
+  description:
+    "Full Stack Developer & GoHighLevel Technical Specialist based in the Philippines.",
+  openGraph: {
+    type: "website",
+    url: "https://www.lxna.dev",
+    siteName: "LXNA",
+    title: "LXNA",
+    description:
+      "Full Stack Developer & GoHighLevel Technical Specialist based in the Philippines.",
+    images: [{ url: "/opengraph-image" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "LXNA",
+    description:
+      "Full Stack Developer & GoHighLevel Technical Specialist based in the Philippines.",
+    images: ["/opengraph-image"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -47,11 +72,28 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Beljohn Luna",
+    url: "https://www.lxna.dev",
+    jobTitle: "Full Stack Developer",
+    email: "beljohnluna@gmail.com",
+    sameAs: [
+      "https://github.com/lxna-dev",
+      "https://www.linkedin.com/in/beljohn-luna/",
+    ],
+  };
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${unifrakturMaguntia.variable} ${voltaire.variable} ${syneMono.variable} mx-auto antialiased`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <SidebarLayout>{children}</SidebarLayout>
       </body>
     </html>
