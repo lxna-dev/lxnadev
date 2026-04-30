@@ -182,7 +182,7 @@ export default function Hero({ initialData }: { initialData?: LanyardData }) {
           <div className="flex flex-wrap gap-3">
             <Button
               size="sm"
-              className="font-syne rounded-none text-xs tracking-wider uppercase"
+              className="font-syne cursor-pointer rounded-none text-xs tracking-wider uppercase"
               onClick={() =>
                 document
                   .getElementById("projects")
@@ -194,7 +194,7 @@ export default function Hero({ initialData }: { initialData?: LanyardData }) {
             <Button
               size="sm"
               variant="outline"
-              className="border-onyx font-syne hover:bg-onyx hover:text-alabaster rounded-none text-xs tracking-wider uppercase"
+              className="border-onyx font-syne hover:bg-onyx cursor-pointer rounded-none text-xs tracking-wider uppercase hover:text-black"
               onClick={() =>
                 document
                   .getElementById("contact")
